@@ -1,8 +1,9 @@
 import React, { useContext } from "react";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Text, TouchableOpacity } from "react-native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 
-import MainMap from "@/screens/MainMap";
+import { MainMap, MainList } from "@/screens";
 import { AuthorizedRoutesList } from "@/types/types";
 import { AuthContext } from "@/providers/Auth";
 
@@ -14,7 +15,23 @@ const AuthorizedRoutes: React.FC<AuthorizedRoutesProps> = ({}) => {
 	const { logout } = useContext(AuthContext);
 
 	return (
-		<Tab.Navigator>
+		<Tab.Navigator
+			screenOptions={({ route }) => ({
+				tabBarIcon: ({ focused, color, size }) => {
+					let iconName: React.ComponentProps<typeof Ionicons>["name"] | undefined;
+
+					if (route.name === "Map") {
+						iconName = focused ? "map" : "map-outline";
+					} else if (route.name === "List") {
+						iconName = focused ? "md-list-circle-sharp" : "md-list-circle-outline";
+					}
+
+					return <Ionicons name={iconName} size={size} color={color} />;
+				},
+				tabBarActiveTintColor: "tomato",
+				tabBarInactiveTintColor: "gray",
+			})}
+		>
 			<Tab.Screen
 				name="Map"
 				component={MainMap}
@@ -26,13 +43,39 @@ const AuthorizedRoutes: React.FC<AuthorizedRoutesProps> = ({}) => {
 									logout();
 								}}
 							>
-								<Text>LOGOUT</Text>
+								<MaterialIcons
+									name="logout"
+									size={24}
+									color="black"
+									style={{ margin: 5, padding: 5 }}
+								/>
 							</TouchableOpacity>
 						);
 					},
 				}}
 			/>
-			{/* <Tab.Screen name="List" component={MainList} /> */}
+			<Tab.Screen
+				name="List"
+				component={MainList}
+				options={{
+					headerRight: () => {
+						return (
+							<TouchableOpacity
+								onPress={() => {
+									logout();
+								}}
+							>
+								<MaterialIcons
+									name="logout"
+									size={24}
+									color="black"
+									style={{ margin: 5, padding: 5 }}
+								/>
+							</TouchableOpacity>
+						);
+					},
+				}}
+			/>
 		</Tab.Navigator>
 	);
 };
