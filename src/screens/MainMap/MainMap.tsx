@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, Dimensions, Alert, Text, Button } from "react-native";
-
 import { Spinner, View } from "native-base";
 import MapView from "react-native-map-clustering";
 import { Marker, Callout } from "react-native-maps";
 import { Entypo } from "@expo/vector-icons";
 import * as Location from "expo-location";
+import axios from "axios";
 
 import Center from "@/utils/Center";
-import { AuthorizedRouteProps } from "@/types/types";
+import { MainViewRouteProps, StudifyEvent } from "@/types/types";
+import { MapCallout } from "./components";
+import { handleEventType } from "./utils";
 
 // tmp mock
 const pins = [
@@ -18,6 +20,7 @@ const pins = [
 		name: "1_1",
 		description: "Bardzo ładne wydarzenie 1",
 		organizer: "Roman",
+		type: "meeting",
 	},
 	{
 		latitude: 51.3619772,
@@ -25,6 +28,7 @@ const pins = [
 		name: "2_2",
 		description: "Bardzo ładne wydarzenie 2",
 		organizer: "Roman",
+		type: "tradeOffer",
 	},
 	{
 		latitude: 51.3619772,
@@ -32,6 +36,7 @@ const pins = [
 		name: "3_3",
 		description: "Bardzo ładne wydarzenie 3",
 		organizer: "Roman",
+		type: "alert",
 	},
 	{
 		latitude: 51.3439772,
@@ -39,15 +44,18 @@ const pins = [
 		name: "4_4",
 		description: "Bardzo ładne wydarzenie 4",
 		organizer: "Roman",
+		type: "meeting",
 	},
 ];
 
-const MainMap: React.FC<AuthorizedRouteProps<"Map">> = ({ navigation }) => {
+const MainMap: React.FC<MainViewRouteProps<"Map">> = ({ navigation }) => {
 	const [isLoading, setIsLoading] = useState(true);
 	const [userCoords, setUserCoords] = useState({ latitude: 50.073658, longitude: 14.41854 });
+	const [studifyEvents, setStudifyEvents] = useState<StudifyEvent[]>([]);
 
 	useEffect(() => {
 		getCurrentLocation();
+		fetchEvents();
 	}, []);
 
 	const getCurrentLocation = async () => {
@@ -79,26 +87,14 @@ const MainMap: React.FC<AuthorizedRouteProps<"Map">> = ({ navigation }) => {
 		}
 	};
 
-	// const EpicMinus = ({ setEpicCounter: (prev: number) => void }): React.ReactElement => {
-	// 	return (
-	// 		<View>
-	// 			<Text>-</Text>
-	// 			<Button title="Press me" onPress={() => setEpicCounter((prev) => prev - 1)} />
-	// 		</View>
-	// 	);
-	// };
-
-	const epicDisplay = () => {
-		const [epicCounter, setEpicCounter] = useState(0);
-
-		return (
-			<View>
-				{/* <EpicMinus setEpicCounter={setEpicCounter} /> */}
-				{/* <Counter epicCounter={epicCounter} />
-				<EpicPlus setEpicCounter={setEpicCounter} /> */}
-				<Text>{"It works!"}</Text>
-			</View>
-		);
+	const fetchEvents = async () => {
+		try {
+			// const res = await axios.get<StudifyEvent[]>("http://192.168.240.229:7312/events");
+			const res = await axios.get<StudifyEvent[]>("http://192.168.88.7:7312/events");
+			setStudifyEvents(res.data);
+		} catch (err) {
+			console.log(err);
+		}
 	};
 
 	if (isLoading) {
@@ -122,8 +118,9 @@ const MainMap: React.FC<AuthorizedRouteProps<"Map">> = ({ navigation }) => {
 						longitudeDelta: 0.0421,
 					}}
 				>
-					{pins.map((pin) => (
+					{studifyEvents.map((pin) => (
 						<Marker
+							key={pin.eventName}
 							coordinate={{
 								longitude: pin.longitude,
 								latitude: pin.latitude,
@@ -131,16 +128,14 @@ const MainMap: React.FC<AuthorizedRouteProps<"Map">> = ({ navigation }) => {
 							title="Some Pin"
 							description="Brand new pin"
 						>
-							{/* <View style={styles.circle}>
-								<View style={styles.core} />
-								<View style={styles.stroke} />
-							</View> */}
-							<Entypo name="location-pin" size={30} color="black" />
-							{/* <Callout>
-								<View>
-									<Text>{pin.description}</Text>
-								</View>
-							</Callout> */}
+							<Entypo name="location-pin" size={50} color={handleEventType(pin.eventType)} />
+							<Callout
+								onPress={() => {
+									navigation.navigate("EventDetails");
+								}}
+							>
+								<MapCallout eventName={pin.description} />
+							</Callout>
 						</Marker>
 					))}
 				</MapView>
@@ -151,6 +146,7 @@ const MainMap: React.FC<AuthorizedRouteProps<"Map">> = ({ navigation }) => {
 
 export default MainMap;
 
+// TODO: rewrite to styled-components
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
@@ -161,11 +157,6 @@ const styles = StyleSheet.create({
 	map: {
 		width: Dimensions.get("window").width,
 		height: Dimensions.get("window").height,
-	},
-	circle: {
-		width: 26,
-		height: 26,
-		borderRadius: 50,
 	},
 	stroke: {
 		backgroundColor: "#ffffff",
@@ -187,57 +178,3 @@ const styles = StyleSheet.create({
 		zIndex: 2,
 	},
 });
-
-// const [locationServiceEnabled, setLocationServiceEnabled] = useState(false);
-// const [displayCurrentAddress, setDisplayCurrentAddress] = useState(
-// 	"Wait, we are fetching you location..."
-// );
-
-// useEffect(() => {
-// 	CheckIfLocationEnabled();
-// 	GetCurrentLocation();
-// }, []);
-
-// const CheckIfLocationEnabled = async () => {
-// 	let enabled = await Location.hasServicesEnabledAsync();
-
-// 	if (!enabled) {
-// 		Alert.alert(
-// 			"Location Service not enabled",
-// 			"Please enable your location services to continue",
-// 			[{ text: "OK" }],
-// 			{ cancelable: false }
-// 		);
-// 	} else {
-// 		setLocationServiceEnabled(enabled);
-// 	}
-// };
-
-// const GetCurrentLocation = async () => {
-// 	let { status } = await Location.requestForegroundPermissionsAsync();
-
-// 	if (status !== "granted") {
-// 		Alert.alert(
-// 			"Permission not granted",
-// 			"Allow the app to use location service.",
-// 			[{ text: "OK" }],
-// 			{ cancelable: false }
-// 		);
-// 	}
-
-// 	let { coords } = await Location.getCurrentPositionAsync();
-
-// 	if (coords) {
-// 		const { latitude, longitude } = coords;
-// 		let response = await Location.reverseGeocodeAsync({
-// 			latitude,
-// 			longitude,
-// 		});
-
-// 		for (let item of response) {
-// 			let address = `${item.name}, ${item.street}, ${item.postalCode}, ${item.city}`;
-
-// 			setDisplayCurrentAddress(address);
-// 		}
-// 	}
-// };

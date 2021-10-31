@@ -5,8 +5,9 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import Center from "@/utils/Center";
 import { AuthContext } from "@/providers/Auth";
-import AuthorizedRoutes from "./AuthorizedRoutes";
-import UnauthorizedRoutes from "./UnauthorizedRoutes";
+import AuthorizedRoutes from "./AuthorizedRoutes/AuthorizedRoutes";
+import UnauthorizedRoutes from "./UnauthorizedRoutes/UnauthorizedRoutes";
+// import MainViewRoutes from "./MainViewRoutes";
 
 interface RoutesProps {}
 

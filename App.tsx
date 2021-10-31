@@ -1,5 +1,4 @@
 import React from "react";
-
 import { NativeBaseProvider } from "native-base";
 
 import { AuthProvider } from "@/providers/Auth";

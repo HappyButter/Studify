@@ -1,35 +1,41 @@
 import React, { useContext } from "react";
-import { Text, TouchableOpacity } from "react-native";
+import { TouchableOpacity } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 
 import { MainMap, MainList } from "@/screens";
-import { AuthorizedRoutesList } from "@/types/types";
+import { MainViewRoutesList } from "@/types/types";
 import { AuthContext } from "@/providers/Auth";
+
+function getTabBarIconName(routeName: string, focused: boolean) {
+	let iconName: React.ComponentProps<typeof Ionicons>["name"] | undefined;
+
+	if (routeName === "Map") {
+		iconName = focused ? "map" : "map-outline";
+	} else if (routeName === "List") {
+		iconName = focused ? "md-list-circle-sharp" : "md-list-circle-outline";
+	}
+
+	return iconName;
+}
 
 interface AuthorizedRoutesProps {}
 
-const Tab = createBottomTabNavigator<AuthorizedRoutesList>();
+const Tab = createBottomTabNavigator<MainViewRoutesList>();
 
-const AuthorizedRoutes: React.FC<AuthorizedRoutesProps> = ({}) => {
+const MainViewRoutes: React.FC<AuthorizedRoutesProps> = ({}) => {
 	const { logout } = useContext(AuthContext);
 
 	return (
 		<Tab.Navigator
 			screenOptions={({ route }) => ({
-				tabBarIcon: ({ focused, color, size }) => {
-					let iconName: React.ComponentProps<typeof Ionicons>["name"] | undefined;
-
-					if (route.name === "Map") {
-						iconName = focused ? "map" : "map-outline";
-					} else if (route.name === "List") {
-						iconName = focused ? "md-list-circle-sharp" : "md-list-circle-outline";
-					}
-
-					return <Ionicons name={iconName} size={size} color={color} />;
-				},
 				tabBarActiveTintColor: "tomato",
 				tabBarInactiveTintColor: "gray",
+				tabBarIcon: ({ focused, color, size }) => {
+					return (
+						<Ionicons name={getTabBarIconName(route.name, focused)} size={size} color={color} />
+					);
+				},
 			})}
 		>
 			<Tab.Screen
@@ -80,4 +86,4 @@ const AuthorizedRoutes: React.FC<AuthorizedRoutesProps> = ({}) => {
 	);
 };
 
-export default AuthorizedRoutes;
+export default MainViewRoutes;
