@@ -24,7 +24,6 @@ const Register: React.FC<UnauthorizedRouteProps<"Register">> = ({ navigation }) 
 	const { login } = useContext(AuthContext);
 
 	return (
-		// <Center>
 		<Box safeArea flex={1} p={2} w="90%" mx="auto">
 			<Heading size="lg" color="primary.500">
 				Welcome
@@ -72,7 +71,6 @@ const Register: React.FC<UnauthorizedRouteProps<"Register">> = ({ navigation }) 
 				Already Registred? Login!
 			</Button>
 		</Box>
-		// </Center>
 	);
 };
 

@@ -8,45 +8,9 @@ import * as Location from "expo-location";
 import axios from "axios";
 
 import Center from "@/utils/Center";
-import { MainViewRouteProps, StudifyEvent } from "@/types/types";
+import { MainViewRouteProps, StudifyEvent } from "@/types/types.d";
 import { MapCallout } from "./components";
 import { handleEventType } from "./utils";
-
-// tmp mock
-const pins = [
-	{
-		latitude: 50.0659198,
-		longitude: 19.9145029,
-		name: "1_1",
-		description: "Bardzo ładne wydarzenie 1",
-		organizer: "Roman",
-		type: "meeting",
-	},
-	{
-		latitude: 51.3619772,
-		longitude: 20.6211787,
-		name: "2_2",
-		description: "Bardzo ładne wydarzenie 2",
-		organizer: "Roman",
-		type: "tradeOffer",
-	},
-	{
-		latitude: 51.3619772,
-		longitude: 20.6111787,
-		name: "3_3",
-		description: "Bardzo ładne wydarzenie 3",
-		organizer: "Roman",
-		type: "alert",
-	},
-	{
-		latitude: 51.3439772,
-		longitude: 20.6311787,
-		name: "4_4",
-		description: "Bardzo ładne wydarzenie 4",
-		organizer: "Roman",
-		type: "meeting",
-	},
-];
 
 const MainMap: React.FC<MainViewRouteProps<"Map">> = ({ navigation }) => {
 	const [isLoading, setIsLoading] = useState(true);
@@ -89,8 +53,8 @@ const MainMap: React.FC<MainViewRouteProps<"Map">> = ({ navigation }) => {
 
 	const fetchEvents = async () => {
 		try {
-			// const res = await axios.get<StudifyEvent[]>("http://192.168.240.229:7312/events");
-			const res = await axios.get<StudifyEvent[]>("http://192.168.88.7:7312/events");
+			const res = await axios.get<StudifyEvent[]>("http://192.168.240.229:7312/events");
+			// const res = await axios.get<StudifyEvent[]>("http://192.168.88.7:7312/events");
 			setStudifyEvents(res.data);
 		} catch (err) {
 			console.log(err);
@@ -107,39 +71,39 @@ const MainMap: React.FC<MainViewRouteProps<"Map">> = ({ navigation }) => {
 
 	return (
 		<Center>
-			<View style={styles.container}>
-				<MapView
-					style={styles.map}
-					showsUserLocation={true}
-					initialRegion={{
-						latitude: userCoords.latitude,
-						longitude: userCoords.longitude,
-						latitudeDelta: 0.0922,
-						longitudeDelta: 0.0421,
-					}}
-				>
-					{studifyEvents.map((pin) => (
-						<Marker
-							key={pin.eventName}
-							coordinate={{
-								longitude: pin.longitude,
-								latitude: pin.latitude,
+			{/* <View style={styles.container}> */}
+			<MapView
+				style={styles.map}
+				showsUserLocation={true}
+				initialRegion={{
+					latitude: userCoords.latitude,
+					longitude: userCoords.longitude,
+					latitudeDelta: 0.0922,
+					longitudeDelta: 0.0421,
+				}}
+			>
+				{studifyEvents.map((pin) => (
+					<Marker
+						key={pin.eventName}
+						coordinate={{
+							longitude: pin.longitude,
+							latitude: pin.latitude,
+						}}
+						title="Some Pin"
+						description="Brand new pin"
+					>
+						<Entypo name="location-pin" size={50} color={handleEventType(pin.eventType)} />
+						<Callout
+							onPress={() => {
+								navigation.navigate("EventDetails");
 							}}
-							title="Some Pin"
-							description="Brand new pin"
 						>
-							<Entypo name="location-pin" size={50} color={handleEventType(pin.eventType)} />
-							<Callout
-								onPress={() => {
-									navigation.navigate("EventDetails");
-								}}
-							>
-								<MapCallout eventName={pin.description} />
-							</Callout>
-						</Marker>
-					))}
-				</MapView>
-			</View>
+							<MapCallout eventName={pin.description} />
+						</Callout>
+					</Marker>
+				))}
+			</MapView>
+			{/* </View> */}
 		</Center>
 	);
 };

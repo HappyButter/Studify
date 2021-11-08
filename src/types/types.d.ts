@@ -5,16 +5,24 @@ import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 import { RouteProp } from "@react-navigation/native";
 
 // User
+export enum EventTypeEnum {
+	TRADE_OFFER = "TradeOffer",
+	ALERT = "Alert",
+	HAPPENING = "Happening",
+}
+export type EventType = `${EventTypeEnum}`;
+
 export type User = {
 	id: number;
 	firstName: string;
 	lastName: string;
 	email: string;
 } | null;
+
 interface StudifyEvent {
 	id: number;
 	eventName: string;
-	eventType: string;
+	eventType: EventType;
 	creationDate: string;
 	expiryDate: string;
 	description: string;
