@@ -79,6 +79,17 @@ const Map: React.FC<MapProps> = () => {
 		}
 	};
 
+	const setAddressFormFields = () => {
+		setFieldValue("latitude", pinCoords.latitude);
+		setFieldValue("longitude", pinCoords.longitude);
+
+		setFieldValue("country", currentAddress.country);
+		setFieldValue("city", currentAddress.city);
+		setFieldValue("street", currentAddress.street);
+		setFieldValue("houseNumber", currentAddress.houseNumber);
+		setFieldValue("district", currentAddress.district);
+	};
+
 	const getAddress = async (coords: PinCoords) => {
 		setPinCoords(coords);
 
@@ -100,22 +111,13 @@ const Map: React.FC<MapProps> = () => {
 		}
 	};
 
-	const setAddressFormFields = () => {
-		setFieldValue("latitude", pinCoords.latitude);
-		setFieldValue("longitude", pinCoords.longitude);
-
-		setFieldValue("country", currentAddress.country);
-		setFieldValue("city", currentAddress.city);
-		setFieldValue("street", currentAddress.street);
-		setFieldValue("houseNumber", currentAddress.houseNumber);
-		setFieldValue("district", currentAddress.district);
-	};
-
 	useEffect(() => {
 		getCurrentLocation();
 	}, []);
 
 	useEffect(() => {
+		setAddressFormFields();
+
 		let address = `
 		Street: ${currentAddress.street} ${currentAddress.houseNumber}
 		City: ${currentAddress.city}
@@ -129,7 +131,6 @@ const Map: React.FC<MapProps> = () => {
 	const handleAddressChange = useCallback(
 		debounce((coords) => {
 			getAddress(coords);
-			setAddressFormFields();
 		}, 1000),
 		[currentAddress, displayCurrentAddress]
 	);
