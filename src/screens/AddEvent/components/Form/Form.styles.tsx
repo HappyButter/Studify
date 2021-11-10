@@ -11,7 +11,7 @@ export const EventTextInput = styled.TextInput`
 `;
 
 export const CustomTouchableOpacity = styled.Pressable`
-	background-color: blue;
+	background-color: #d37d6b;
 	opacity: ${(props) => (props.disabled ? 0.3 : 1)};
 	border-radius: 12px;
 	color: #eee;

@@ -3,6 +3,7 @@ import ButtonToggleGroup from "react-native-button-toggle-group";
 
 import { EventType, EventTypeEnum } from "@/types/types.d";
 import { HeaderContainer, HeaderText } from "./Header.styles";
+import { useFormikContext } from "formik";
 
 interface HeaderProps {
 	eventType: EventType;
@@ -10,17 +11,24 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ eventType, setEventType }) => {
+	const { setFieldValue } = useFormikContext();
+
+	const handleTypeChange = (type: EventType) => {
+		setEventType(type);
+		setFieldValue("eventType", type);
+	};
+
 	return (
 		<HeaderContainer>
 			<HeaderText>Add Event!</HeaderText>
 			<ButtonToggleGroup
-				highlightBackgroundColor={"blue"}
-				highlightTextColor={"white"}
+				highlightBackgroundColor={"#D37D6B"}
+				highlightTextColor={"#4E3B4B"}
 				inactiveBackgroundColor={"transparent"}
-				inactiveTextColor={"grey"}
+				inactiveTextColor={"#4E3B4B"}
 				values={[EventTypeEnum.ALERT, EventTypeEnum.HAPPENING, EventTypeEnum.TRADE_OFFER]}
 				value={eventType}
-				onSelect={(e) => setEventType(e)}
+				onSelect={(e) => handleTypeChange(e)}
 			/>
 		</HeaderContainer>
 	);

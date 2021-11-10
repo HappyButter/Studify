@@ -11,14 +11,8 @@ export const AddEventContainer = styled.View`
 `;
 
 export const ScrollView = styled.ScrollView`
-	background-color: pink;
-	margin: 0px 20px;
-	width: 100%;
-`;
-
-export const StickyHeader = styled.Text`
 	background-color: #1c1c1c;
-	height: 100px;
+	margin: 0px 20px;
 	width: 100%;
 `;
 
