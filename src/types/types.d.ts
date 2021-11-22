@@ -40,17 +40,19 @@ export type UnauthorizedRoutesList = {
 
 export type AuthorizedRoutesList = {
 	MainView: undefined;
-	EventDetails: undefined;
+	EventView: undefined;
+	SideBarNavigation: undefined;
 };
 
 export type MainViewRoutesList = {
 	Map: undefined;
 	List: undefined;
-	EventDetails: undefined;
+	RedirectToAddEventForm: undefined;
 };
 
 export type EventViewRoutesList = {
 	EventDetails: undefined;
+	AddEventForm: undefinedl;
 };
 
 // Screen props

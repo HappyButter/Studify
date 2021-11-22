@@ -21,15 +21,17 @@ const Header: React.FC<HeaderProps> = ({ eventType, setEventType }) => {
 	return (
 		<HeaderContainer>
 			<HeaderText>Add Event!</HeaderText>
-			<ButtonToggleGroup
+			{/* <ButtonToggleGroup
 				highlightBackgroundColor={"#D37D6B"}
 				highlightTextColor={"#4E3B4B"}
 				inactiveBackgroundColor={"transparent"}
 				inactiveTextColor={"#4E3B4B"}
 				values={[EventTypeEnum.ALERT, EventTypeEnum.HAPPENING, EventTypeEnum.TRADE_OFFER]}
 				value={eventType}
+				// onSelect passes string instead of EventTypeEnum. However values are given from EventTypeEnum.
+				// @ts-ignore
 				onSelect={(e) => handleTypeChange(e)}
-			/>
+			/> */}
 		</HeaderContainer>
 	);
 };

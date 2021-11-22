@@ -12,7 +12,7 @@ export const HeaderContainer = styled.View`
 export const HeaderText = styled.Text`
 	text-align: center;
 	color: #1c1c1c;
-	margin-top: 20px;
-	padding: 20px 0;
+	/* margin-top: 20px; */
+	padding-bottom: 20px;
 	font-size: 20px;
 `;

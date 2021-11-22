@@ -10,8 +10,8 @@ import { AddressContainer, MapView, MapViewContainer } from "./Map.styles";
 import { Alert } from "react-native";
 
 interface PinCoords {
-	latitude: number;
-	longitude: number;
+	latitude?: number;
+	longitude?: number;
 	latitudeDelta: number;
 	longitudeDelta: number;
 }
@@ -35,8 +35,8 @@ const Map: React.FC<MapProps> = () => {
 
 	const [isLoading, setIsLoading] = useState(true);
 	const [pinCoords, setPinCoords] = useState<PinCoords>({
-		latitude: 50.073658,
-		longitude: 14.41854,
+		latitude: undefined,
+		longitude: undefined,
 		latitudeDelta: 0.0122,
 		longitudeDelta: 0.0121,
 	});
@@ -80,6 +80,7 @@ const Map: React.FC<MapProps> = () => {
 	};
 
 	const setAddressFormFields = () => {
+		if (!(pinCoords.latitude && pinCoords.longitude)) return;
 		setFieldValue("latitude", pinCoords.latitude);
 		setFieldValue("longitude", pinCoords.longitude);
 
@@ -95,6 +96,8 @@ const Map: React.FC<MapProps> = () => {
 
 		if (coords) {
 			const { latitude, longitude } = coords;
+
+			if (!(longitude && latitude)) return;
 			let response = await Location.reverseGeocodeAsync({
 				latitude,
 				longitude,
@@ -162,7 +165,8 @@ const Map: React.FC<MapProps> = () => {
 				<MapView
 					onRegionChange={handleAddressChange}
 					showsUserLocation={true}
-					initialRegion={pinCoords}
+					// @ts-ignore
+					initialRegion={pinCoords.latitude && pinCoords.longitude ? pinCoords : undefined}
 				></MapView>
 			</MapViewContainer>
 

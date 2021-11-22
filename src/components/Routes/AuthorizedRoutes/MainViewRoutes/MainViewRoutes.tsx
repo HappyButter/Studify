@@ -1,11 +1,12 @@
-import React, { useContext } from "react";
-import { TouchableOpacity } from "react-native";
+import React from "react";
+import { TouchableOpacity, StyleSheet } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Ionicons, MaterialIcons } from "@expo/vector-icons";
+import { View } from "native-base";
+import { Ionicons } from "@expo/vector-icons";
 
 import { MainMap, MainList } from "@/screens";
 import { MainViewRoutesList } from "@/types/types";
-import { AuthContext } from "@/providers/Auth";
 
 function getTabBarIconName(routeName: string, focused: boolean) {
 	let iconName: React.ComponentProps<typeof Ionicons>["name"] | undefined;
@@ -19,71 +20,91 @@ function getTabBarIconName(routeName: string, focused: boolean) {
 	return iconName;
 }
 
-interface AuthorizedRoutesProps {}
+interface MainViewRoutesProps {}
 
 const Tab = createBottomTabNavigator<MainViewRoutesList>();
 
-const MainViewRoutes: React.FC<AuthorizedRoutesProps> = ({}) => {
-	const { logout } = useContext(AuthContext);
+const MainViewRoutes: React.FC<MainViewRoutesProps> = () => {
+	const navigation = useNavigation();
+
+	function MenuBtn() {
+		return (
+			<TouchableOpacity onPress={() => navigation.openDrawer()}>
+				<Ionicons name={"menu"} size={35} color={"black"} style={{ margin: 10 }} />
+			</TouchableOpacity>
+		);
+	}
+
+	function AddEventBtn() {
+		return (
+			<TouchableOpacity
+				style={{
+					top: -35,
+					justifyContent: "center",
+					alignItems: "center",
+				}}
+				onPress={() =>
+					navigation.navigate("EventView" as never, { screen: "AddEventForm" } as never)
+				}
+			>
+				<Ionicons name={"add-circle"} size={80} color={"red"} />
+			</TouchableOpacity>
+		);
+	}
+
+	const RedirectContent = () => <></>;
 
 	return (
 		<Tab.Navigator
 			screenOptions={({ route }) => ({
-				tabBarActiveTintColor: "tomato",
+				title: "Studify",
+				headerStyle: {
+					backgroundColor: "#925867",
+				},
+				headerRight: MenuBtn,
+				tabBarActiveTintColor: "#D37D6B",
 				tabBarInactiveTintColor: "gray",
+				tabBarStyle: {
+					position: "absolute",
+					bottom: 15,
+					left: 20,
+					right: 20,
+					backgroundColor: "#4E3B4B",
+					borderRadius: 15,
+					height: 75,
+					...styles.shadow,
+				},
 				tabBarIcon: ({ focused, color, size }) => {
 					return (
-						<Ionicons name={getTabBarIconName(route.name, focused)} size={size} color={color} />
+						<View style={{ alignItems: "center", justifyContent: "center", top: 3 }}>
+							<Ionicons name={getTabBarIconName(route.name, focused)} size={size} color={color} />
+						</View>
 					);
 				},
 			})}
 		>
+			<Tab.Screen name="Map" component={MainMap} />
 			<Tab.Screen
-				name="Map"
-				component={MainMap}
-				options={{
-					headerRight: () => {
-						return (
-							<TouchableOpacity
-								onPress={() => {
-									logout();
-								}}
-							>
-								<MaterialIcons
-									name="logout"
-									size={24}
-									color="black"
-									style={{ margin: 5, padding: 5 }}
-								/>
-							</TouchableOpacity>
-						);
-					},
-				}}
+				name="RedirectToAddEventForm"
+				component={RedirectContent}
+				options={{ tabBarButton: AddEventBtn }}
 			/>
-			<Tab.Screen
-				name="List"
-				component={MainList}
-				options={{
-					headerRight: () => {
-						return (
-							<TouchableOpacity
-								onPress={() => {
-									logout();
-								}}
-							>
-								<MaterialIcons
-									name="logout"
-									size={24}
-									color="black"
-									style={{ margin: 5, padding: 5 }}
-								/>
-							</TouchableOpacity>
-						);
-					},
-				}}
-			/>
+			<Tab.Screen name="List" component={MainList} />
 		</Tab.Navigator>
 	);
 };
+
+const styles = StyleSheet.create({
+	shadow: {
+		shadowColor: "#7F5DF0",
+		shadowOffset: {
+			width: 0,
+			height: 10,
+		},
+		shadowOpacity: 0.25,
+		shadowRadius: 3.5,
+		elevation: 5,
+	},
+});
 
 export default MainViewRoutes;

@@ -3,7 +3,6 @@ import { NativeBaseProvider } from "native-base";
 
 import { AuthProvider } from "@/providers/Auth";
 import Routes from "@/components/Routes";
-import AddEvent from "@/screens/AddEvent";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 interface AppProps {}
@@ -11,14 +10,11 @@ interface AppProps {}
 const App: React.FC<AppProps> = () => {
 	return (
 		<AuthProvider>
-			{/* <SafeAreaView> */}
-			<NativeBaseProvider>
-				<AddEvent />
-			</NativeBaseProvider>
-			{/* </SafeAreaView> */}
-			{/* <NativeBaseProvider>
-				<Routes />
-			</NativeBaseProvider> */}
+			<SafeAreaView style={{ flex: 1, backgroundColor: "#925867" }}>
+				<NativeBaseProvider>
+					<Routes />
+				</NativeBaseProvider>
+			</SafeAreaView>
 		</AuthProvider>
 	);
 };

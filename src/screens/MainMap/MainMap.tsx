@@ -70,8 +70,7 @@ const MainMap: React.FC<MainViewRouteProps<"Map">> = ({ navigation }) => {
 	}
 
 	return (
-		<Center>
-			{/* <View style={styles.container}> */}
+		<View style={styles.container}>
 			<MapView
 				style={styles.map}
 				showsUserLocation={true}
@@ -103,31 +102,24 @@ const MainMap: React.FC<MainViewRouteProps<"Map">> = ({ navigation }) => {
 					</Marker>
 				))}
 			</MapView>
-			{/* </View> */}
-		</Center>
+		</View>
 	);
 };
 
 export default MainMap;
 
-// TODO: rewrite to styled-components
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		backgroundColor: "#fff",
 		alignItems: "center",
 		justifyContent: "center",
+		bottom: 10,
+		top: 10,
 	},
 	map: {
-		width: Dimensions.get("window").width,
-		height: Dimensions.get("window").height,
-	},
-	stroke: {
-		backgroundColor: "#ffffff",
-		borderRadius: 50,
-		width: "100%",
-		height: "100%",
-		zIndex: 1,
+		width: Dimensions.get("window").width - 10,
+		height: Dimensions.get("window").height - 10,
 	},
 	core: {
 		backgroundColor: "red",
