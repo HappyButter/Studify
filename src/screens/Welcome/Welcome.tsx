@@ -1,27 +1,27 @@
 import React from "react";
 
-import { Button, Heading } from "native-base";
-
-import Center from "@/utils/Center";
 import { UnauthorizedRouteProps } from "@/types/types";
+import {
+	CustomTouchableOpacity,
+	ButtonTitle,
+	WelcomeView,
+	WelcomeContainer,
+	Title,
+} from "./Welcome.styles";
 
 const Welcome: React.FC<UnauthorizedRouteProps<"Welcome">> = ({ navigation }) => {
 	return (
-		<Center>
-			<Heading size="md">
-				Studify
-				{"\n"}
-				{"\n"}
-				{"\n"}
-			</Heading>
-			<Button
-				onPress={() => {
-					navigation.navigate("Register");
-				}}
-			>
-				Let's Get Started!
-			</Button>
-		</Center>
+		<WelcomeContainer>
+			<WelcomeView>
+				<Title>
+					Studify
+					{"\n"}
+				</Title>
+				<CustomTouchableOpacity onPress={() => navigation.navigate("Register")}>
+					<ButtonTitle>Let's get started!</ButtonTitle>
+				</CustomTouchableOpacity>
+			</WelcomeView>
+		</WelcomeContainer>
 	);
 };
 

@@ -8,10 +8,9 @@ import {
 
 import { AuthorizedRoutesList } from "@/types/types";
 import MainViewRoutes from "./MainViewRoutes";
-import EventViewRoutes from "./EventViewRoutes";
+import SecondViewRoutes from "./SecondViewRoutes";
 
 import { AuthContext } from "@/providers/Auth";
-import { Profile } from "@/screens";
 
 interface AuthorizedRouterProps {}
 
@@ -25,23 +24,30 @@ const AuthorizedRoutes: React.FC<AuthorizedRouterProps> = () => {
 			drawerContent={(props) => <CustomDrawerContent {...props} />}
 		>
 			<MainDrawer.Screen name="MainView" component={MainViewRoutes} />
-			<MainDrawer.Screen name="EventView" component={EventViewRoutes} />
-			<MainDrawer.Screen name="Profile" component={Profile} />
+			<MainDrawer.Screen name="SecondView" component={SecondViewRoutes} />
 		</MainDrawer.Navigator>
 	);
 };
 
-function CustomDrawerContent(props) {
-	const { logout } = useContext(AuthContext);
+function CustomDrawerContent(props: any) {
+	const { logout, user } = useContext(AuthContext);
 	return (
 		<DrawerContentScrollView {...props}>
-			<DrawerItem label="Profile" onPress={() => props.navigation.navigate("Profile")} />
+			<DrawerItem
+				label="Profile"
+				onPress={() =>
+					props.navigation.navigate("SecondView", {
+						screen: "Profile",
+						params: { userId: user?.id },
+					})
+				}
+			/>
 			<DrawerItem label="Messages" onPress={() => alert("Messages")} />
 			<DrawerItem
 				label="Logout"
 				onPress={() => logout()}
 				inactiveBackgroundColor="#ff000022"
-				inactiveTintColor="#ff0000"
+				inactiveTintColor="#e60303"
 			/>
 		</DrawerContentScrollView>
 	);

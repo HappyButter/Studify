@@ -7,7 +7,6 @@ import Center from "@/utils/Center";
 import { AuthContext } from "@/providers/Auth";
 import AuthorizedRoutes from "./AuthorizedRoutes/AuthorizedRoutes";
 import UnauthorizedRoutes from "./UnauthorizedRoutes/UnauthorizedRoutes";
-// import MainViewRoutes from "./MainViewRoutes";
 
 interface RoutesProps {}
 

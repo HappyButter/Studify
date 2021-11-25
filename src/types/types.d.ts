@@ -40,8 +40,7 @@ export type UnauthorizedRoutesList = {
 
 export type AuthorizedRoutesList = {
 	MainView: undefined;
-	EventView: undefined;
-	SideBarNavigation: undefined;
+	SecondView: undefined;
 };
 
 export type MainViewRoutesList = {
@@ -50,9 +49,11 @@ export type MainViewRoutesList = {
 	RedirectToAddEventForm: undefined;
 };
 
-export type EventViewRoutesList = {
+export type SecondViewRoutesList = {
 	EventDetails: undefined;
-	AddEventForm: undefinedl;
+	AddEventForm: undefined;
+	Profile: { userId: string };
+	Messages: undefined;
 };
 
 // Screen props
@@ -62,11 +63,11 @@ export type UnauthorizedRouteProps<Route extends keyof UnauthorizedRoutesList> =
 };
 
 export type MainViewRouteProps<Route extends keyof MainViewRoutesList> = {
-	navigation: StackNavigationProp<MainViewRoutesList, Route>;
+	navigation: BottomTabScreenProps<MainViewRoutesList, Route>;
 	route: RouteProp<MainViewRoutesList, Route>;
 };
 
-export type EventViewRoutesProps<Route extends keyof EventViewRoutesList> = {
-	navigation: StackNavigationProp<EventViewRoutesList, Route>;
-	route: RouteProp<EventViewRoutesList, Route>;
+export type SecondViewRouteProps<Route extends keyof SecondViewRoutesList> = {
+	navigation: StackNavigationProp<SecondViewRoutesList, Route>;
+	route: RouteProp<SecondViewRoutesList, Route>;
 };

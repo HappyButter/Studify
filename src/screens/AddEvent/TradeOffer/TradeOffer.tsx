@@ -1,8 +1,7 @@
 import React, { Fragment, useState } from "react";
-import { Text } from "react-native";
 import { Field } from "formik";
 
-import { Map, EventFormField } from "../components";
+import { EventFormField } from "../components";
 
 interface TradeOfferProps {}
 

@@ -1,6 +1,6 @@
 import React from "react";
 import { TouchableOpacity, StyleSheet } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, DrawerActions } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { View } from "native-base";
 import { Ionicons } from "@expo/vector-icons";
@@ -29,7 +29,7 @@ const MainViewRoutes: React.FC<MainViewRoutesProps> = () => {
 
 	function MenuBtn() {
 		return (
-			<TouchableOpacity onPress={() => navigation.openDrawer()}>
+			<TouchableOpacity onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
 				<Ionicons name={"menu"} size={35} color={"black"} style={{ margin: 10 }} />
 			</TouchableOpacity>
 		);
@@ -44,7 +44,12 @@ const MainViewRoutes: React.FC<MainViewRoutesProps> = () => {
 					alignItems: "center",
 				}}
 				onPress={() =>
-					navigation.navigate("EventView" as never, { screen: "AddEventForm" } as never)
+					navigation.navigate(
+						"SecondView" as never,
+						{
+							screen: "AddEventForm",
+						} as never
+					)
 				}
 			>
 				<Ionicons name={"add-circle"} size={80} color={"red"} />

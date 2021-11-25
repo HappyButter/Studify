@@ -1,76 +1,42 @@
 import React, { useContext } from "react";
 
-import {
-	Button,
-	Heading,
-	NativeBaseProvider,
-	Box,
-	Text,
-	VStack,
-	FormControl,
-	Input,
-	Link,
-	Icon,
-	IconButton,
-	HStack,
-	Divider,
-} from "native-base";
-
-import Center from "@/utils/Center";
 import { UnauthorizedRouteProps } from "@/types/types";
 import { AuthContext } from "@/providers/Auth";
+import { RegisterContainer, RegisterTitle } from "./Register.styles";
+import { Form, FormButton, FormField, FormPressableLink } from "@/components/Form";
+import { Field } from "formik";
 
 const Register: React.FC<UnauthorizedRouteProps<"Register">> = ({ navigation }) => {
 	const { login } = useContext(AuthContext);
 
 	return (
-		<Box safeArea flex={1} p={2} w="90%" mx="auto">
-			<Heading size="lg" color="primary.500">
-				Welcome
-			</Heading>
-			<Heading color="muted.400" size="xs">
-				Sign up to Studify!
-			</Heading>
-
-			<VStack space={2} mt={5}>
-				<FormControl>
-					<FormControl.Label _text={{ color: "muted.700", fontSize: "sm", fontWeight: 600 }}>
-						Email
-					</FormControl.Label>
-					<Input />
-				</FormControl>
-				<FormControl>
-					<FormControl.Label _text={{ color: "muted.700", fontSize: "sm", fontWeight: 600 }}>
-						Password
-					</FormControl.Label>
-					<Input type="password" />
-				</FormControl>
-				<FormControl>
-					<FormControl.Label _text={{ color: "muted.700", fontSize: "sm", fontWeight: 600 }}>
-						Confirm Password
-					</FormControl.Label>
-					<Input type="password" />
-				</FormControl>
-				<VStack space={2} mt={5}>
-					<Button
-						onPress={() => {
-							login();
-						}}
-					>
-						Register
-					</Button>
-				</VStack>
-			</VStack>
-
-			<Button
-				variant="ghost"
-				onPress={() => {
-					navigation.navigate("Login");
+		<RegisterContainer>
+			<RegisterTitle>Register</RegisterTitle>
+			<Form
+				initialValues={{
+					email: "",
+					firstName: "",
+					lastName: "",
+					password: "",
 				}}
+				onSubmit={() => {
+					login();
+				}}
+				// onSubmit={(values: any) => console.log(values)}
 			>
-				Already Registred? Login!
-			</Button>
-		</Box>
+				<Field component={FormField} name="email" placeholder="Email" multiline />
+				<Field component={FormField} name="firstName" placeholder="First name" multiline />
+				<Field component={FormField} name="lastName" placeholder="Last name" multiline />
+				<Field component={FormField} name="password" placeholder="Password" multiline />
+				<FormButton title="Submit" />
+				<FormPressableLink
+					title="Already Registred? Login!"
+					onPress={() => {
+						navigation.navigate("Login");
+					}}
+				/>
+			</Form>
+		</RegisterContainer>
 	);
 };
 

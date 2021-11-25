@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Field } from "formik";
 
-import { Header, Map, EventForm, EventFormButton, EventFormField } from "./components";
+import { Header, Map, EventForm, EventFormButton } from "./components";
 import { AddEventContainer, ScrollView } from "./AddEvent.styles";
 import { EventTypeEnum } from "@/types/types.d";
 import { addEventFields, validationSchema } from "./utils/AddEvent.utils";
