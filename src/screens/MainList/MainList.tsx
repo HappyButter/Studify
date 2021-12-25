@@ -17,7 +17,8 @@ const MainList: React.FC<MainViewRouteProps<"List">> = ({ navigation }) => {
 	const fetchEvents = async () => {
 		try {
 			// const res = await axios.get<StudifyEvent[]>("http://192.168.240.229:7312/events");
-			const res = await axios.get<StudifyEvent[]>("http://192.168.88.7:7312/events");
+			const res = await axios.get<StudifyEvent[]>("http://192.168.88.5:7312/events");
+			// const res = await axios.get<StudifyEvent[]>("http://192.168.88.7:7312/events");
 			setStudifyEvents(res.data);
 			setIsLoading(false);
 		} catch (err) {

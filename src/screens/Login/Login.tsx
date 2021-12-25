@@ -14,17 +14,20 @@ const Login: React.FC<UnauthorizedRouteProps<"Login">> = ({ navigation }) => {
 			<LoginTitle>Login</LoginTitle>
 			<Form
 				initialValues={{
-					name: "",
-					latitude: undefined,
-					longitude: undefined,
+					email: "",
+					password: "",
 				}}
-				onSubmit={() => {
-					login();
+				onSubmit={(values: any) => {
+					login(values.email, values.password);
 				}}
-				// onSubmit={(values: any) => console.log(values)}
 			>
-				<Field component={FormField} name="email" placeholder="Email" multiline />
-				<Field component={FormField} name="password" placeholder="Password" multiline />
+				<Field component={FormField} name="email" placeholder="Email" />
+				<Field
+					component={FormField}
+					name="password"
+					placeholder="Password"
+					secureTextEntry={true}
+				/>
 				<FormButton title="Submit" />
 				<FormPressableLink
 					title={"Don't have an account?" + "\n" + " Sign Up!"}

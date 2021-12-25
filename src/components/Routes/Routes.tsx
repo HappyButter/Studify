@@ -12,19 +12,19 @@ interface RoutesProps {}
 
 const Routes: React.FC<RoutesProps> = ({}) => {
 	const { user, login } = useContext(AuthContext);
-	const [loading, setLoading] = useState(true);
+	const [loading, setLoading] = useState(false);
 
 	useEffect(() => {
-		AsyncStorage.getItem("user")
-			.then((userString) => {
-				if (userString) {
-					login();
-				}
-				setLoading(false);
-			})
-			.catch((err) => {
-				console.log(err);
-			});
+		// AsyncStorage.getItem("user")
+		// 	.then((userString) => {
+		// 		if (userString) {
+		// 			login();
+		// 		}
+		// 		setLoading(false);
+		// 	})
+		// 	.catch((err) => {
+		// 		console.log(err);
+		// 	});
 	}, []);
 
 	if (loading) {

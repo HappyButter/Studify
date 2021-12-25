@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import ButtonToggleGroup from "react-native-button-toggle-group";
+import React, { useEffect, useState } from "react";
+import { StyleSheet, TextStyle, ViewStyle } from "react-native";
 import { ButtonGroup } from "react-native-elements";
 
 import { EventType, EventTypeEnum } from "@/types/types.d";
@@ -15,7 +15,13 @@ const Header: React.FC<HeaderProps> = ({ eventType, setEventType }) => {
 	const { setFieldValue } = useFormikContext();
 	const [selectedIndex, setSelectedIndex] = useState(0);
 
-	const typeList = Object.values(EventTypeEnum);
+	const typeList: string[] = Object.values(EventTypeEnum);
+
+	useEffect(() => {
+		setSelectedIndex(typeList.indexOf(eventType));
+		setEventType(eventType);
+		setFieldValue("eventType", eventType);
+	}, []);
 
 	const handleTypeChange = (index: number) => {
 		setSelectedIndex(index);
@@ -32,7 +38,8 @@ const Header: React.FC<HeaderProps> = ({ eventType, setEventType }) => {
 				onPress={(value) => {
 					handleTypeChange(value);
 				}}
-				containerStyle={{ marginBottom: 20 }}
+				containerStyle={headerStyles.buttonGroupContainer}
+				selectedButtonStyle={headerStyles.buttonContainer}
 			/>
 			{/* <ButtonToggleGroup
 				highlightBackgroundColor={"#D37D6B"}
@@ -48,5 +55,22 @@ const Header: React.FC<HeaderProps> = ({ eventType, setEventType }) => {
 		</HeaderContainer>
 	);
 };
+
+interface Style {
+	buttonGroupContainer: ViewStyle;
+	buttonContainer: ViewStyle;
+}
+
+const headerStyles = StyleSheet.create<Style>({
+	buttonGroupContainer: {
+		borderWidth: 0,
+		borderRadius: 5,
+		backgroundColor: "#4E3B4B",
+		height: 45,
+	},
+	buttonContainer: {
+		backgroundColor: "#D37D6B",
+	},
+});
 
 export default Header;

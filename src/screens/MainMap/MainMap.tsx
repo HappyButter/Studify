@@ -83,7 +83,7 @@ const MainMap: React.FC<MainViewRouteProps<"Map">> = ({ navigation }) => {
 			>
 				{studifyEvents.map((pin) => (
 					<Marker
-						key={pin.eventName}
+						key={pin.id}
 						coordinate={{
 							longitude: pin.longitude,
 							latitude: pin.latitude,

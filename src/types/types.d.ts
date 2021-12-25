@@ -20,15 +20,24 @@ export type User = {
 } | null;
 
 interface StudifyEvent {
-	id: number;
+	id: string;
+	authorId: string;
+	authorName: string;
+	creationDate: string;
+	description: Date;
 	eventName: string;
 	eventType: EventType;
-	creationDate: string;
-	expiryDate: string;
-	description: string;
+	eventTemperature: number;
 	longitude: number;
 	latitude: number;
-	authorId: number;
+	hasUserVoted: boolean;
+}
+
+interface StudifyMessage {
+	authorId: string;
+	authorName: string;
+	message: string;
+	timestamp: string;
 }
 
 // Navigator lists

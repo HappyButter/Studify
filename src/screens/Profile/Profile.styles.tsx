@@ -57,17 +57,24 @@ export const GoBackButton = styled.TouchableOpacity`
 `;
 
 export const EventContainer = styled.View`
-	display: flex;
+	background-color: #d37d6b;
+	/* display: flex;
 	flex-direction: row;
 
-	background-color: #d37d6b;
 	justify-content: center;
 	align-items: center;
 	color: #eee;
 	width: 90%;
-	height: 10%;
+	height: 20%;
 	margin: 10px;
 	padding: 10px 20px;
 	font-size: 18px;
-	border-radius: 12px;
+	border-radius: 12px; */
+`;
+
+export const CustomFlatList = styled.FlatList`
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	width: 100%;
 `;

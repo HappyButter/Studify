@@ -1,12 +1,16 @@
+import { User } from "firebase/auth";
 import React from "react";
-import { User } from "@/types/types";
 
 const AuthContext = React.createContext<{
-	user: User;
-	login: () => void;
+	user: User | null;
+	loading: boolean;
+	error: string | null;
+	login: (email: string, pasword: string) => void;
 	logout: () => void;
 }>({
 	user: null,
+	loading: false,
+	error: null,
 	login: () => {},
 	logout: () => {},
 });
