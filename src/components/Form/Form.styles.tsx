@@ -11,7 +11,7 @@ export const CustomTextInput = styled.TextInput`
 	border-radius: 12px;
 `;
 
-export const CustomPressableButton = styled.Pressable`
+export const CustomPressableButton = styled.TouchableOpacity`
 	background-color: #d37d6b;
 	opacity: ${(props) => (props.disabled ? 0.3 : 1)};
 	border-radius: 12px;

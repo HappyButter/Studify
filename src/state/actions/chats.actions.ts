@@ -14,6 +14,13 @@ export interface GetUsersChats {
 	payload: null;
 }
 
+export interface GetCurrentChat {
+	type: ActionTypes.GET_CURRENT_CHAT;
+	payload: {
+		eventId: string;
+	};
+}
+
 export interface ReceiveUsersChats {
 	type: ActionTypes.RECEIVE_USERS_CHATS;
 	payload: {
@@ -56,5 +63,12 @@ export const getUsersChats = (): GetUsersChats => {
 	return {
 		type: ActionTypes.GET_USERS_CHATS,
 		payload: null,
+	};
+};
+
+export const getCurrentChat = (eventId: string): GetCurrentChat => {
+	return {
+		type: ActionTypes.GET_CURRENT_CHAT,
+		payload: { eventId },
 	};
 };

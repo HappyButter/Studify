@@ -8,7 +8,7 @@ import { EventTypeEnum } from "@/types/types.d";
 
 const alertValidationSchema = Yup.object().shape({
 	eventType: Yup.string(),
-	name: Yup.string().required("Alert title is required"),
+	eventName: Yup.string().required("Alert title is required"),
 	description: Yup.string().required("Description is required"),
 	latitude: Yup.number().required(),
 	longitude: Yup.number().required(),
@@ -16,7 +16,7 @@ const alertValidationSchema = Yup.object().shape({
 
 const happeningValidationSchema = Yup.object().shape({
 	eventType: Yup.string(),
-	name: Yup.string().required("Happening title is required"),
+	eventName: Yup.string().required("Happening title is required"),
 	description: Yup.string().required("Description is required"),
 	latitude: Yup.number().required(),
 	longitude: Yup.number().required(),
@@ -24,7 +24,8 @@ const happeningValidationSchema = Yup.object().shape({
 
 const tradeOfferValidationSchema = Yup.object().shape({
 	eventType: Yup.string(),
-	name: Yup.string().required("Trade offer title is required"),
+	eventName: Yup.string().required("Trade offer title is required"),
+	description: Yup.string().required("Description is required"),
 	offer: Yup.string().required(),
 	receive: Yup.string().required(),
 	latitude: Yup.number().required(),

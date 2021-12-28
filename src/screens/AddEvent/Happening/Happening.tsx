@@ -9,7 +9,7 @@ interface HappeningProps {}
 const Happening: React.FC<HappeningProps> = () => {
 	return (
 		<Fragment>
-			<Field component={EventFormField} name="name" placeholder="Name" multiline />
+			<Field component={EventFormField} name="eventName" placeholder="Name" multiline />
 			<Field component={EventFormField} name="description" placeholder="Description..." multiline />
 		</Fragment>
 	);

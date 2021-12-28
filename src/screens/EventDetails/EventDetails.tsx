@@ -1,16 +1,118 @@
-import React from "react";
-import { Button } from "react-native";
-import { Container, Text } from "./EventDetails.styles";
+import React, { useEffect, useState } from "react";
+import { Button, View, Text } from "react-native";
+import { useSelector, useDispatch } from "react-redux";
+import {
+	Avatar,
+	EventContent,
+	EventHeader,
+	EventHeaderData,
+	EventHeaderGoBackArea,
+	EventHeaderText,
+	EventVoter,
+	GoBackButton,
+	ScrollView,
+	VoterLeft,
+	VoterRight,
+	VoterTemperature,
+} from "./EventDetails.styles";
 import Center from "@/utils/Center";
 import { SecondViewRouteProps } from "@/types/types";
+import { StoreState } from "@/state/reducers";
+import { StudifyEvent, EventTypeEnum } from "@/types/types.d";
+import { Ionicons } from "@expo/vector-icons";
+import { Map } from "./components";
+import { sendVote } from "@/state/actions";
 
-const EventDetails: React.FC<SecondViewRouteProps<"EventDetails">> = ({ navigation }) => {
+const EventDetails: React.FC<SecondViewRouteProps<"EventDetails">> = ({ navigation, route }) => {
+	const [eventData, setEventData] = useState<StudifyEvent | null>(null);
+	const { eventId } = route.params;
+	const eventList = useSelector((store: StoreState) => store.events.eventList);
+	const dispatch = useDispatch();
+
+	useEffect(() => {
+		const currentEvent = eventList.find((event) => event.id === eventId);
+		setEventData((prev) => currentEvent || null);
+	}, [eventList, eventId]);
+
+	const handleVote = (eventId: string, vote: string) => {
+		dispatch(sendVote(eventId, vote));
+	};
+
 	return (
 		<Center>
-			<Text>TU BĘDĄ DETALE!!!</Text>
-			<Button title="Go Back" onPress={() => navigation.goBack()} />
+			<ScrollView>
+				<EventHeader>
+					<Avatar>
+						{eventData && (
+							<Ionicons // @ts-ignore
+								name={avatars[eventData.eventType] || "construct-outline"}
+								size={100}
+								color={"#fff"}
+							/>
+						)}
+					</Avatar>
+					<EventHeaderData>
+						<EventHeaderText style={{ fontSize: 25 }}>{eventData?.eventName}</EventHeaderText>
+						<EventHeaderText style={{ fontSize: 18 }}>{eventData?.authorName}</EventHeaderText>
+					</EventHeaderData>
+					<EventHeaderGoBackArea>
+						<GoBackButton onPress={() => navigation.goBack()}>
+							<View>
+								<Ionicons name={"arrow-undo-sharp"} size={20} color={"#fff"} />
+							</View>
+						</GoBackButton>
+					</EventHeaderGoBackArea>
+				</EventHeader>
+
+				{eventData && (
+					<>
+						<EventContent>{"description:\n" + eventData.description}</EventContent>
+						<Map
+							latitude={eventData.latitude}
+							longitude={eventData.longitude}
+							eventType={eventData.eventType}
+						/>
+						<EventVoter>
+							<VoterLeft
+								onPress={() => handleVote(eventData.id, "like")}
+								disabled={eventData.hasUserVoted}
+							>
+								<Text>
+									<Ionicons
+										name={"thumbs-up-outline"}
+										size={100}
+										color={eventData.hasUserVoted ? "#999999" : "#fff"}
+									/>
+								</Text>
+							</VoterLeft>
+							<VoterTemperature>
+								<EventHeaderText style={{ fontSize: 45 }}>
+									{eventData.eventTemperature}
+								</EventHeaderText>
+							</VoterTemperature>
+							<VoterRight
+								onPress={() => handleVote(eventData.id, "dislike")}
+								disabled={eventData.hasUserVoted}
+							>
+								<Text>
+									<Ionicons
+										name={"thumbs-down-outline"}
+										size={100}
+										color={eventData.hasUserVoted ? "#999999" : "#fff"}
+									/>
+								</Text>
+							</VoterRight>
+						</EventVoter>
+					</>
+				)}
+			</ScrollView>
 		</Center>
 	);
+};
+const avatars = {
+	[EventTypeEnum.ALERT]: "alert-circle-outline",
+	[EventTypeEnum.HAPPENING]: "basketball-outline",
+	[EventTypeEnum.TRADE_OFFER]: "repeat-outline",
 };
 
 export default EventDetails;

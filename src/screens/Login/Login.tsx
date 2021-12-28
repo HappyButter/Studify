@@ -17,8 +17,8 @@ const Login: React.FC<UnauthorizedRouteProps<"Login">> = ({ navigation }) => {
 					email: "",
 					password: "",
 				}}
-				onSubmit={(values: any) => {
-					login(values.email, values.password);
+				onSubmit={(values: { email: string; password: string }) => {
+					login({ ...values });
 				}}
 			>
 				<Field component={FormField} name="email" placeholder="Email" />

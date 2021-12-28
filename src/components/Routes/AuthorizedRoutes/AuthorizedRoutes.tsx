@@ -12,12 +12,10 @@ import SecondViewRoutes from "./SecondViewRoutes";
 
 import { AuthContext } from "@/providers/Auth";
 import Toast from "react-native-toast-message";
-// import { io } from "socket.io-client";
 import { useDispatch, useSelector } from "react-redux";
-import { connectSocket } from "@/store/actions";
-import { StoreState } from "@/store/reducers";
-
-// const socket = io("http://192.168.88.5:7312", { auth: { userId: "10", userName: "Andrzej" } });
+import { connectSocket, getAllEvents } from "@/state/actions";
+import { StoreState } from "@/state/reducers";
+import { getUsersChats, resetReduxOnLogout } from "@/state/actions";
 
 interface AuthorizedRouterProps {}
 
@@ -25,21 +23,24 @@ const MainDrawer = createDrawerNavigator();
 
 const AuthorizedRoutes: React.FC<AuthorizedRouterProps> = () => {
 	const dispatch = useDispatch();
-	const events = useSelector((store: StoreState) => store.events.eventList);
+	const event = useSelector((store: StoreState) => store.events.notification);
+	const { user } = useContext(AuthContext);
 
 	useEffect(() => {
-		dispatch(connectSocket());
-	}, [dispatch]);
+		if (user) {
+			dispatch(connectSocket(user.uid, user.displayName || ""));
+		}
+	}, []);
 
 	useEffect(() => {
-		const newEvent = events.slice(-1)[0];
-
-		Toast.show({
-			type: "info",
-			text1: newEvent.eventName,
-		});
-		console.log(newEvent);
-	}, [events]);
+		if (event) {
+			Toast.show({
+				type: "info",
+				text1: event.eventName,
+				text2: event.description,
+			});
+		}
+	}, [event]);
 
 	return (
 		<MainDrawer.Navigator
@@ -55,6 +56,12 @@ const AuthorizedRoutes: React.FC<AuthorizedRouterProps> = () => {
 
 function CustomDrawerContent(props: any) {
 	const { logout, user } = useContext(AuthContext);
+
+	const handleLogout = () => {
+		logout();
+		resetReduxOnLogout();
+	};
+
 	return (
 		<DrawerContentScrollView {...props}>
 			<DrawerItem
@@ -62,14 +69,14 @@ function CustomDrawerContent(props: any) {
 				onPress={() =>
 					props.navigation.navigate("SecondView", {
 						screen: "Profile",
-						params: { userId: user?.id },
+						params: { userId: user?.uid },
 					})
 				}
 			/>
 			<DrawerItem label="Messages" onPress={() => alert("Messages")} />
 			<DrawerItem
 				label="Logout"
-				onPress={() => logout()}
+				onPress={handleLogout}
 				inactiveBackgroundColor="#ff000022"
 				inactiveTintColor="#e60303"
 			/>

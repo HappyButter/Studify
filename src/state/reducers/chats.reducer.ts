@@ -50,6 +50,9 @@ export const chatsReducer = (state = initialState, action: Action) => {
 				notification: { ...newMessage },
 			};
 		}
+		case ActionTypes.RESET_ON_LOGOUT: {
+			return { ...initialState };
+		}
 
 		default:
 			return state;

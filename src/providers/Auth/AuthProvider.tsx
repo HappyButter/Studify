@@ -1,17 +1,15 @@
 import React, { useState, useEffect } from "react";
 import firebase from "firebase/compat/app";
-// import { User } from "firebase/auth";
+import { User } from "@/types/types";
 
 import "firebase/compat/auth";
-import "firebase/compat/database";
 
 import AuthContext from "./AuthContext";
-import { User } from "@/types/types";
 
 interface AuthProviderProps {}
 
 const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-	const [user, setUser] = useState<User>(null);
+	const [user, setUser] = useState<User | null>(null);
 	const [loading, setLoading] = useState<boolean>(false);
 	const [error, setError] = useState<string | null>(null);
 
@@ -27,30 +25,61 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 	useEffect(() => {
 		// firebase.initializeApp(firebaseConfig);
 		// firebase.auth().onAuthStateChanged((userState) => {
-		// 	setUser(userState);
+		// 	if (userState) {
+		// 		const authUser = {
+		// 			uid: userState.uid,
+		// 			displayName: userState.displayName,
+		// 			email: userState.email,
+		// 		};
+		// 		setUser(authUser);
+		// 	} else {
+		// 		setUser(null);
+		// 	}
 		// });
 		setUser({
-			id: 123,
-			firstName: "string",
-			lastName: "string",
-			email: "string",
+			uid: "dddd",
+			displayName: "Janusz Roman",
+			email: "f@f.com",
 		});
 	}, []);
 
-	const login = (email: string, pasword: string): void => {
-		// firebase
-		// 	.auth()
-		// 	.signInWithEmailAndPassword(email, pasword)
-		// 	.then((cred) => {
-		// 		// console.log(cred.user);
-		// 	})
-		// 	.catch((err) => {
-		// 		console.log(err);
-		// 	});
+	const login = (credentials: { email: string; password: string }): void => {
+		firebase
+			.auth()
+			.signInWithEmailAndPassword(credentials.email, credentials.password)
+			.then((cred) => {
+				// console.log(cred.user);
+			})
+			.catch((err) => {
+				console.log(err);
+			});
 	};
 
 	const logout = () => {
 		// firebase.auth().signOut();
+	};
+
+	const register = (credentials: {
+		email: string;
+		password: string;
+		firstName: string;
+		lastName: string;
+	}): void => {
+		const { email, password, firstName, lastName } = credentials;
+
+		firebase
+			.auth()
+			.createUserWithEmailAndPassword(email, password)
+			.then((credential) => {
+				if (credential) {
+					credential.user.updateProfile({
+						displayName: firstName + " " + lastName,
+					});
+				}
+			})
+			.catch((err) => {
+				console.log(err);
+			});
 	};
 
 	return (
@@ -60,6 +89,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 				loading,
 				error,
 				login,
+				register,
 				logout,
 			}}
 		>

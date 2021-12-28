@@ -9,7 +9,7 @@ export const EventTextInput = styled.TextInput`
 	border-radius: 12px;
 `;
 
-export const CustomTouchableOpacity = styled.Pressable`
+export const CustomTouchableOpacity = styled.TouchableOpacity`
 	background-color: #d37d6b;
 	opacity: ${(props) => (props.disabled ? 0.3 : 1)};
 	border-radius: 12px;

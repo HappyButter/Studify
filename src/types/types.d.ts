@@ -13,9 +13,8 @@ export enum EventTypeEnum {
 export type EventType = `${EventTypeEnum}`;
 
 export type User = {
-	id: number;
-	firstName: string;
-	lastName: string;
+	uid: string;
+	displayName: string;
 	email: string;
 } | null;
 
@@ -24,13 +23,15 @@ interface StudifyEvent {
 	authorId: string;
 	authorName: string;
 	creationDate: string;
-	description: Date;
+	description: string;
 	eventName: string;
 	eventType: EventType;
 	eventTemperature: number;
 	longitude: number;
 	latitude: number;
 	hasUserVoted: boolean;
+	offer?: string;
+	receive?: string;
 }
 
 interface StudifyMessage {
@@ -59,7 +60,7 @@ export type MainViewRoutesList = {
 };
 
 export type SecondViewRoutesList = {
-	EventDetails: undefined;
+	EventDetails: { eventId: string };
 	AddEventForm: undefined;
 	Profile: { userId: string };
 	Messages: undefined;
@@ -72,7 +73,7 @@ export type UnauthorizedRouteProps<Route extends keyof UnauthorizedRoutesList> =
 };
 
 export type MainViewRouteProps<Route extends keyof MainViewRoutesList> = {
-	navigation: BottomTabScreenProps<MainViewRoutesList, Route>;
+	navigation: StackNavigationProp<MainViewRoutesList, Route>;
 	route: RouteProp<MainViewRoutesList, Route>;
 };
 

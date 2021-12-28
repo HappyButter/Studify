@@ -9,7 +9,7 @@ interface AlertProps {}
 const Alert: React.FC<AlertProps> = () => {
 	return (
 		<Fragment>
-			<Field component={EventFormField} name="name" placeholder="Name" multiline />
+			<Field component={EventFormField} name="eventName" placeholder="Name" multiline />
 			<Field component={EventFormField} name="description" placeholder="Description..." multiline />
 		</Fragment>
 	);

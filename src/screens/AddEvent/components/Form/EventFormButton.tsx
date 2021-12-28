@@ -8,7 +8,7 @@ interface EventFormSubmitButtonProps {
 }
 
 const EventFormSubmitButton: React.FC<EventFormSubmitButtonProps> = ({ title }) => {
-	const { handleSubmit, isValid } = useFormikContext();
+	const { handleSubmit, isValid, errors } = useFormikContext();
 	return (
 		<CustomTouchableOpacity
 			onPress={handleSubmit as unknown as (ev: NativeSyntheticEvent<NativeTouchEvent>) => void}

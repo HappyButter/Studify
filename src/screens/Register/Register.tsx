@@ -7,7 +7,7 @@ import { Form, FormButton, FormField, FormPressableLink } from "@/components/For
 import { Field } from "formik";
 
 const Register: React.FC<UnauthorizedRouteProps<"Register">> = ({ navigation }) => {
-	const { login } = useContext(AuthContext);
+	const { register } = useContext(AuthContext);
 
 	return (
 		<RegisterContainer>
@@ -19,10 +19,14 @@ const Register: React.FC<UnauthorizedRouteProps<"Register">> = ({ navigation }) 
 					lastName: "",
 					password: "",
 				}}
-				onSubmit={() => {
-					login();
+				onSubmit={(values: {
+					email: string;
+					password: string;
+					firstName: string;
+					lastName: string;
+				}) => {
+					register({ ...values });
 				}}
-				// onSubmit={(values: any) => console.log(values)}
 			>
 				<Field component={FormField} name="email" placeholder="Email" multiline />
 				<Field component={FormField} name="firstName" placeholder="First name" multiline />

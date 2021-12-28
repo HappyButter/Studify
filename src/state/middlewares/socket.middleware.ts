@@ -11,8 +11,15 @@ const createSocketMiddleware = (): Middleware => {
 			case ActionTypes.SOCKET_CONNECT:
 				if (socket) socket.close();
 
-				socket = io("http://192.168.88.5:7312", {
-					auth: { userId: "10", userName: "Andrzej" },
+				socket = io("http://192.168.88.15:7312", {
+					auth: { userId: action.payload.userId, userName: action.payload.userName },
+				});
+
+				socket.on("connect", () => {
+					next({
+						type: ActionTypes.CONNECTION_ESTABLISHED,
+						payload: null,
+					});
 				});
 
 				socket.on("event-all", (eventList) => {
@@ -87,6 +94,12 @@ const createSocketMiddleware = (): Middleware => {
 					});
 				});
 
+			case ActionTypes.CONNECTION_ESTABLISHED:
+				socket?.emit("get-all-events");
+				socket?.emit("get-users-chats");
+				next(action);
+				break;
+
 			case ActionTypes.GET_ALL_EVENTS:
 				socket?.emit("get-all-events");
 				next(action);
@@ -97,8 +110,14 @@ const createSocketMiddleware = (): Middleware => {
 				next(action);
 				break;
 
+			case ActionTypes.GET_CURRENT_CHAT:
+				socket?.emit("get-current-chat", action.payload?.eventId);
+				next(action);
+				break;
+
 			case ActionTypes.CREATE_EVENT:
-				socket?.emit("create-event", action.payload);
+				console.log("action.payload.eventData");
+				socket?.emit("create-event", action.payload.eventData);
 				next(action);
 				break;
 
@@ -109,6 +128,11 @@ const createSocketMiddleware = (): Middleware => {
 
 			case ActionTypes.SEND_VOTE:
 				socket?.emit("vote", action.payload);
+				next(action);
+				break;
+
+			case ActionTypes.RESET_ON_LOGOUT:
+				socket?.close();
 				next(action);
 				break;
 

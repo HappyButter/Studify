@@ -16,9 +16,13 @@ export const eventReducer = (state = initialState, action: Action) => {
 		case ActionTypes.RECEIVE_ALL_EVENTS: {
 			const { eventList } = action.payload;
 
+			const sorted = eventList.sort(
+				(a, b) => new Date(b.creationDate).getTime() - new Date(a.creationDate).getTime()
+			);
+
 			return {
 				...state,
-				eventList: [...(eventList || [])],
+				eventList: [...(sorted || [])],
 			};
 		}
 		case ActionTypes.RECEIVE_NEW_EVENT: {
@@ -26,20 +30,17 @@ export const eventReducer = (state = initialState, action: Action) => {
 
 			return {
 				...state,
-				eventList: [...(state.eventList || []), eventData],
+				eventList: [eventData, ...(state.eventList || [])],
 				notification: eventData,
 			};
 		}
 		case ActionTypes.RECEIVE_UPDATE_EVENT: {
 			const { eventData } = action.payload;
 
-			const eventIndex = state.eventList.findIndex((event) => event.id === eventData.id);
-
-			eventIndex !== -1
-				? (state.eventList[eventIndex] = eventData)
-				: state.eventList.push(eventData);
-
-			return { ...state };
+			return {
+				...state,
+				eventList: [...state.eventList.filter((event) => event.id !== eventData.id), eventData],
+			};
 		}
 		case ActionTypes.RECEIVE_DELETE_EVENT: {
 			const { eventId } = action.payload;
@@ -48,6 +49,9 @@ export const eventReducer = (state = initialState, action: Action) => {
 				...state,
 				eventList: state.eventList.filter((event) => event.id !== eventId),
 			};
+		}
+		case ActionTypes.RESET_ON_LOGOUT: {
+			return { ...initialState };
 		}
 
 		default:

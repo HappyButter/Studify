@@ -1,11 +1,11 @@
 import { StudifyEvent } from "@/types/types";
 import { ActionTypes } from "../types/types";
 
-interface NewEventData {
+export interface NewEventData {
 	eventType: string;
 	eventName: string;
-	description: string;
 	latitude: number;
+	description: string;
 	longitude: number;
 	offer?: string;
 	receive?: string;

@@ -5,7 +5,7 @@ import Toast from "react-native-toast-message";
 import { Provider } from "react-redux";
 
 import { AuthProvider } from "@/providers/Auth";
-import Routes from "@/components/Routes";
+import { Routes } from "@/components";
 import { configureStore } from "@/state/store";
 
 const store = configureStore();

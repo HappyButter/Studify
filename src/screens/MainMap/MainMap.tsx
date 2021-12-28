@@ -5,21 +5,24 @@ import MapView from "react-native-map-clustering";
 import { Marker, Callout } from "react-native-maps";
 import { Entypo } from "@expo/vector-icons";
 import * as Location from "expo-location";
-import axios from "axios";
 
 import Center from "@/utils/Center";
-import { MainViewRouteProps, StudifyEvent } from "@/types/types.d";
+import { MainViewRouteProps } from "@/types/types.d";
 import { MapCallout } from "./components";
-import { handleEventType } from "./utils";
+import { colors } from "./utils";
+import { useSelector } from "react-redux";
+import { StoreState } from "@/state/reducers";
+import { useNavigation } from "@react-navigation/native";
 
 const MainMap: React.FC<MainViewRouteProps<"Map">> = ({ navigation }) => {
 	const [isLoading, setIsLoading] = useState(true);
 	const [userCoords, setUserCoords] = useState({ latitude: 50.073658, longitude: 14.41854 });
-	const [studifyEvents, setStudifyEvents] = useState<StudifyEvent[]>([]);
+	const eventList = useSelector((store: StoreState) => store.events.eventList);
+
+	const customNavigation = useNavigation();
 
 	useEffect(() => {
 		getCurrentLocation();
-		fetchEvents();
 	}, []);
 
 	const getCurrentLocation = async () => {
@@ -51,16 +54,6 @@ const MainMap: React.FC<MainViewRouteProps<"Map">> = ({ navigation }) => {
 		}
 	};
 
-	const fetchEvents = async () => {
-		try {
-			const res = await axios.get<StudifyEvent[]>("http://192.168.240.229:7312/events");
-			// const res = await axios.get<StudifyEvent[]>("http://192.168.88.7:7312/events");
-			setStudifyEvents(res.data);
-		} catch (err) {
-			console.log(err);
-		}
-	};
-
 	if (isLoading) {
 		return (
 			<Center>
@@ -81,7 +74,7 @@ const MainMap: React.FC<MainViewRouteProps<"Map">> = ({ navigation }) => {
 					longitudeDelta: 0.0421,
 				}}
 			>
-				{studifyEvents.map((pin) => (
+				{eventList.map((pin) => (
 					<Marker
 						key={pin.id}
 						coordinate={{
@@ -91,10 +84,16 @@ const MainMap: React.FC<MainViewRouteProps<"Map">> = ({ navigation }) => {
 						title="Some Pin"
 						description="Brand new pin"
 					>
-						<Entypo name="location-pin" size={50} color={handleEventType(pin.eventType)} />
+						<Entypo name="location-pin" size={50} color={colors[pin.eventType]} />
 						<Callout
 							onPress={() => {
-								navigation.navigate("EventDetails");
+								customNavigation.navigate(
+									"SecondView" as never,
+									{
+										screen: "EventDetails",
+										params: { eventId: pin.id },
+									} as never
+								);
 							}}
 						>
 							<MapCallout eventName={pin.description} />

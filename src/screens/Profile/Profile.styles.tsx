@@ -15,8 +15,6 @@ export const PersonDetails = styled.View`
 
 	background-color: #303245;
 	color: #eee;
-	width: 90%;
-	height: 30%;
 	margin: 10px;
 	padding: 10px 20px;
 	font-size: 18px;
@@ -56,25 +54,9 @@ export const GoBackButton = styled.TouchableOpacity`
 	align-items: center;
 `;
 
-export const EventContainer = styled.View`
-	background-color: #d37d6b;
-	/* display: flex;
-	flex-direction: row;
-
-	justify-content: center;
-	align-items: center;
-	color: #eee;
-	width: 90%;
-	height: 20%;
-	margin: 10px;
-	padding: 10px 20px;
-	font-size: 18px;
-	border-radius: 12px; */
-`;
-
-export const CustomFlatList = styled.FlatList`
-	position: relative;
-	display: flex;
-	flex-direction: column;
+export const ScrollView = styled.ScrollView`
+	background-color: #1c1c1c;
+	margin: 0px 20px;
+	padding-top: 10px;
 	width: 100%;
 `;
