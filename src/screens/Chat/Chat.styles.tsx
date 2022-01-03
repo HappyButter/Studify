@@ -4,6 +4,7 @@ export const ScrollView = styled.ScrollView`
 	background-color: #1c1c1c;
 	margin: 0px 20px;
 	padding-top: 10px;
+	padding-bottom: 100px;
 	width: 100%;
 `;
 
@@ -90,22 +91,4 @@ export const VoterRight = styled.TouchableOpacity`
 	align-items: center;
 	align-self: center;
 	width: 40%;
-`;
-
-export const ChatBtnBox = styled.View`
-	display: flex;
-	flex-direction: row;
-
-	background-color: #303245;
-	color: #999999;
-	margin: 10px;
-	padding: 10px 20px;
-	font-size: 18px;
-	border-radius: 12px;
-`;
-
-export const ChatBtn = styled.TouchableOpacity`
-	align-items: center;
-	align-self: center;
-	width: 100%;
 `;

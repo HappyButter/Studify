@@ -14,6 +14,8 @@ import {
 	VoterLeft,
 	VoterRight,
 	VoterTemperature,
+	ChatBtnBox,
+	ChatBtn,
 } from "./EventDetails.styles";
 import Center from "@/utils/Center";
 import { SecondViewRouteProps } from "@/types/types";
@@ -21,7 +23,7 @@ import { StoreState } from "@/state/reducers";
 import { StudifyEvent, EventTypeEnum } from "@/types/types.d";
 import { Ionicons } from "@expo/vector-icons";
 import { Map } from "./components";
-import { sendVote } from "@/state/actions";
+import { getCurrentChat, sendVote } from "@/state/actions";
 
 const EventDetails: React.FC<SecondViewRouteProps<"EventDetails">> = ({ navigation, route }) => {
 	const [eventData, setEventData] = useState<StudifyEvent | null>(null);
@@ -32,6 +34,8 @@ const EventDetails: React.FC<SecondViewRouteProps<"EventDetails">> = ({ navigati
 	useEffect(() => {
 		const currentEvent = eventList.find((event) => event.id === eventId);
 		setEventData((prev) => currentEvent || null);
+
+		dispatch(getCurrentChat(eventId));
 	}, [eventList, eventId]);
 
 	const handleVote = (eventId: string, vote: string) => {
@@ -72,6 +76,23 @@ const EventDetails: React.FC<SecondViewRouteProps<"EventDetails">> = ({ navigati
 							longitude={eventData.longitude}
 							eventType={eventData.eventType}
 						/>
+						<ChatBtnBox>
+							<ChatBtn
+								onPress={() => {
+									navigation.navigate(
+										"SecondView" as never,
+										{
+											screen: "Chat",
+											params: { eventId: eventData.id },
+										} as never
+									);
+								}}
+							>
+								<Text>
+									<Ionicons name={"chatbox-outline"} size={100} color={"#fff"} />
+								</Text>
+							</ChatBtn>
+						</ChatBtnBox>
 						<EventVoter>
 							<VoterLeft
 								onPress={() => handleVote(eventData.id, "like")}
@@ -80,7 +101,7 @@ const EventDetails: React.FC<SecondViewRouteProps<"EventDetails">> = ({ navigati
 								<Text>
 									<Ionicons
 										name={"thumbs-up-outline"}
-										size={100}
+										size={80}
 										color={eventData.hasUserVoted ? "#999999" : "#fff"}
 									/>
 								</Text>
@@ -97,7 +118,7 @@ const EventDetails: React.FC<SecondViewRouteProps<"EventDetails">> = ({ navigati
 								<Text>
 									<Ionicons
 										name={"thumbs-down-outline"}
-										size={100}
+										size={80}
 										color={eventData.hasUserVoted ? "#999999" : "#fff"}
 									/>
 								</Text>

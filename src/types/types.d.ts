@@ -64,6 +64,7 @@ export type SecondViewRoutesList = {
 	AddEventForm: undefined;
 	Profile: { userId: string };
 	Messages: undefined;
+	Chat: { eventId: string };
 };
 
 // Screen props

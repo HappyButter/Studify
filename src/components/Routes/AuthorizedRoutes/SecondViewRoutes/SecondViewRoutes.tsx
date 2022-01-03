@@ -1,7 +1,7 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { SecondViewRoutesList } from "@/types/types";
-import { EventDetails, Profile } from "@/screens";
+import { Chat, EventDetails, Profile } from "@/screens";
 import AddEvent from "@/screens/AddEvent";
 import { DrawerActions, useNavigation } from "@react-navigation/native";
 import { TouchableOpacity } from "react-native";
@@ -36,6 +36,7 @@ const SecondViewRoutes: React.FC<SecondViewRoutesProps> = () => {
 			<SecondViewStack.Screen name="EventDetails" component={EventDetails} />
 			<SecondViewStack.Screen name="AddEventForm" component={AddEvent} />
 			<SecondViewStack.Screen name="Profile" component={Profile} />
+			<SecondViewStack.Screen name="Chat" component={Chat} />
 		</SecondViewStack.Navigator>
 	);
 };

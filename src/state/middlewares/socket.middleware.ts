@@ -11,7 +11,7 @@ const createSocketMiddleware = (): Middleware => {
 			case ActionTypes.SOCKET_CONNECT:
 				if (socket) socket.close();
 
-				socket = io("http://192.168.88.15:7312", {
+				socket = io("http://192.168.240.229:7312", {
 					auth: { userId: action.payload.userId, userName: action.payload.userName },
 				});
 
@@ -86,6 +86,7 @@ const createSocketMiddleware = (): Middleware => {
 				});
 
 				socket.on("message", (newMessage) => {
+					console.log(newMessage);
 					next({
 						type: ActionTypes.RECEIVE_NEW_MESSAGE,
 						payload: {
@@ -116,7 +117,6 @@ const createSocketMiddleware = (): Middleware => {
 				break;
 
 			case ActionTypes.CREATE_EVENT:
-				console.log("action.payload.eventData");
 				socket?.emit("create-event", action.payload.eventData);
 				next(action);
 				break;

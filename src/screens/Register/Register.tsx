@@ -31,7 +31,12 @@ const Register: React.FC<UnauthorizedRouteProps<"Register">> = ({ navigation }) 
 				<Field component={FormField} name="email" placeholder="Email" multiline />
 				<Field component={FormField} name="firstName" placeholder="First name" multiline />
 				<Field component={FormField} name="lastName" placeholder="Last name" multiline />
-				<Field component={FormField} name="password" placeholder="Password" multiline />
+				<Field
+					component={FormField}
+					name="password"
+					placeholder="Password"
+					secureTextEntry={true}
+				/>
 				<FormButton title="Submit" />
 				<FormPressableLink
 					title="Already Registred? Login!"

@@ -26,8 +26,9 @@ const AddEvent = () => {
 					longitude: undefined,
 				}}
 				validationSchema={validationSchema[eventType]}
-				onSubmit={(values: NewEventData) => {
+				onSubmit={(values: NewEventData, { resetForm }: { resetForm: () => void }) => {
 					dispatch(createEvent(values));
+					resetForm();
 
 					navigation.navigate(
 						"MainView" as never,

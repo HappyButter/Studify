@@ -81,10 +81,8 @@ const MainMap: React.FC<MainViewRouteProps<"Map">> = ({ navigation }) => {
 							longitude: pin.longitude,
 							latitude: pin.latitude,
 						}}
-						title="Some Pin"
-						description="Brand new pin"
 					>
-						<Entypo name="location-pin" size={50} color={colors[pin.eventType]} />
+						<Entypo name="location-pin" size={55} color={colors[pin.eventType]} />
 						<Callout
 							onPress={() => {
 								customNavigation.navigate(
@@ -96,7 +94,7 @@ const MainMap: React.FC<MainViewRouteProps<"Map">> = ({ navigation }) => {
 								);
 							}}
 						>
-							<MapCallout eventName={pin.description} />
+							<MapCallout eventName={pin.eventName} description={pin.description} />
 						</Callout>
 					</Marker>
 				))}

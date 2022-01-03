@@ -1,18 +1,19 @@
 import React from "react";
 import { Divider } from "native-base";
 
-import { Container, Text } from "./MapCallout.styles";
+import { Container, EventNameText, EventDescriptionText } from "./MapCallout.styles";
 
 interface MapCalloutProps {
 	eventName: string;
+	description: string;
 }
 
-const MapCallout: React.FC<MapCalloutProps> = ({ eventName }) => {
+const MapCallout: React.FC<MapCalloutProps> = ({ eventName, description }) => {
 	return (
 		<Container>
-			<Text>{eventName}</Text>
-			<Divider my={2} />
-			<Text>{eventName}</Text>
+			<EventNameText>{eventName}</EventNameText>
+			<Divider my={2} color={"white"} />
+			<EventDescriptionText>{description}</EventDescriptionText>
 		</Container>
 	);
 };

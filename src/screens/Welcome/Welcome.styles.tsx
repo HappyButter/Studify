@@ -6,6 +6,9 @@ export const WelcomeContainer = styled.View`
 	flex-direction: column;
 	background-color: #1c1c1c;
 	align-items: center;
+	justify-content: center;
+	height: 100%;
+	width: 100%;
 `;
 
 export const WelcomeView = styled.View`

@@ -10,6 +10,7 @@ const Center: React.FC<CenterProps> = ({ children }) => {
 				flex: 1,
 				alignItems: "center",
 				justifyContent: "center",
+				backgroundColor: "#1c1c1c",
 			}}
 		>
 			{children}

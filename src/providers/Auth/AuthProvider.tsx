@@ -5,6 +5,7 @@ import { User } from "@/types/types";
 import "firebase/compat/auth";
 
 import AuthContext from "./AuthContext";
+import MessageBox from "../../screens/Chat/components/MessageBox/MessageBox";
 
 interface AuthProviderProps {}
 
@@ -23,23 +24,18 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 	};
 
 	useEffect(() => {
-		// firebase.initializeApp(firebaseConfig);
-		// firebase.auth().onAuthStateChanged((userState) => {
-		// 	if (userState) {
-		// 		const authUser = {
-		// 			uid: userState.uid,
-		// 			displayName: userState.displayName,
-		// 			email: userState.email,
-		// 		};
-		// 		setUser(authUser);
-		// 	} else {
-		// 		setUser(null);
-		// 	}
-		// });
-		setUser({
-			uid: "dddd",
-			displayName: "Janusz Roman",
-			email: "f@f.com",
+		firebase.initializeApp(firebaseConfig);
+		firebase.auth().onAuthStateChanged((userState) => {
+			if (userState) {
+				const authUser: User = {
+					uid: userState.uid,
+					displayName: userState.displayName || "",
+					email: userState.email || "",
+				};
+				setUser(authUser);
+			} else {
+				setUser(null);
+			}
 		});
 	}, []);
 
@@ -51,12 +47,12 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 				// console.log(cred.user);
 			})
 			.catch((err) => {
-				console.log(err);
+				alert("Invalid email or password.");
 			});
 	};
 
 	const logout = () => {
-		// firebase.auth().signOut();
+		firebase.auth().signOut();
 	};
 
 	const register = (credentials: {
@@ -72,13 +68,22 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 			.createUserWithEmailAndPassword(email, password)
 			.then((credential) => {
 				if (credential) {
-					credential.user.updateProfile({
-						displayName: firstName + " " + lastName,
-					});
+					credential.user
+						?.updateProfile({
+							displayName: firstName + " " + lastName,
+						})
+						.then(() => {
+							const authUser: User = {
+								uid: credential.user.uid,
+								displayName: credential.user.displayName || "",
+								email: credential.user.email || "",
+							};
+							setUser(authUser);
+						});
 				}
 			})
 			.catch((err) => {
-				console.log(err);
+				alert(err.message);
 			});
 	};
 

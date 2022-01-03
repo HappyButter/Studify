@@ -23,7 +23,6 @@ const MainDrawer = createDrawerNavigator();
 
 const AuthorizedRoutes: React.FC<AuthorizedRouterProps> = () => {
 	const dispatch = useDispatch();
-	const event = useSelector((store: StoreState) => store.events.notification);
 	const { user } = useContext(AuthContext);
 
 	useEffect(() => {
@@ -31,16 +30,6 @@ const AuthorizedRoutes: React.FC<AuthorizedRouterProps> = () => {
 			dispatch(connectSocket(user.uid, user.displayName || ""));
 		}
 	}, []);
-
-	useEffect(() => {
-		if (event) {
-			Toast.show({
-				type: "info",
-				text1: event.eventName,
-				text2: event.description,
-			});
-		}
-	}, [event]);
 
 	return (
 		<MainDrawer.Navigator
@@ -55,7 +44,27 @@ const AuthorizedRoutes: React.FC<AuthorizedRouterProps> = () => {
 };
 
 function CustomDrawerContent(props: any) {
+	const event = useSelector((store: StoreState) => store.events.notification);
+
 	const { logout, user } = useContext(AuthContext);
+
+	useEffect(() => {
+		if (event) {
+			Toast.show({
+				type: "info",
+				text1: event.eventName,
+				text2: event.description,
+				topOffset: 70,
+				onPress: () => {
+					props.navigation.navigate("SecondView", {
+						screen: "EventDetails",
+						params: { eventId: event.id },
+					});
+					Toast.hide();
+				},
+			});
+		}
+	}, [event]);
 
 	const handleLogout = () => {
 		logout();
@@ -73,7 +82,6 @@ function CustomDrawerContent(props: any) {
 					})
 				}
 			/>
-			<DrawerItem label="Messages" onPress={() => alert("Messages")} />
 			<DrawerItem
 				label="Logout"
 				onPress={handleLogout}
